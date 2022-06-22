@@ -66,9 +66,9 @@ button:active{
 .zero{
     width: 144px;
 }
-.C, .AC{
+.clear{
     background-color: #00ccff;
 }
-.negative, .divide, .times, .minus, .add, .eq{
+.modifier{
     background-color: #9999ff;
 }
