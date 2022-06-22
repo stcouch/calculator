@@ -1,0 +1,28 @@
+.calc-shell{
+    background-color: grey;
+    display: flex;
+    width: 350px;
+    height: 500px;
+    margin: auto;
+    border-radius: 20px;
+    justify-content: center;
+}
+.calc-screen{
+    margin-top: 20px;
+    padding-right: 10px;
+    background-color: white;
+    display: flex; 
+    justify-content: center;
+    align-items: flex-end;
+    width: 300px;
+    height: 55px;
+    border-radius: 10px;
+    flex-direction: column;
+}
+.calc-screen-q{
+    font-style: italic;
+}
+.calc-screen-ans{
+    font-weight: bold;
+    font-size: 25px;
+}
