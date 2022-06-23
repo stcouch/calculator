@@ -1,101 +1,133 @@
 //variable declaration
-let value = 0; //keep track of number on top row
+let value = ''; 
+let value2 = '';
+let total = ''; //keep track of number being entered/evaluated
 let mode = ''; //add/multiply/etc
-let total = 0; //keep track of number being entered/evaluated
+let eqFlag = 0; 
 
 //get buttons and modifiers
-const numberButtons = document.querySelectorAll('.number');
-const modButtons = document.querySelectorAll('.modifier');
-const equation = document.querySelector('.calc-screen-q');
+const numbers = document.querySelectorAll('.number');
+const operators = document.querySelectorAll('.modifier');
+const equationfield = document.querySelector('.calc-screen-q');
 const totalfield = document.querySelector('.calc-screen-ans');
 const equals = document.querySelector('.equate');
 const clearButton = document.querySelector('.clear');
 
-equals.addEventListener("click", () => evaluate(mode, total, value));
+clearButton.addEventListener('click', () => clear());
 
-clearButton.addEventListener("click", () => clear());
+equals.addEventListener('click', () => equate(mode, value2, value));
 
-numberButtons.forEach((button) =>
-    button.addEventListener('click', () => addDigit(button.textContent))
-)
+numbers.forEach(function(element){
+    element.addEventListener('click', () => addDigit(element.id));
+});
 
-for (let i = 0; i < modButtons.length; i++){
-    modButtons[i].addEventListener("click", function(){
-        let mod = modButtons[i].id;
-        total = Number(value);
-        totalfield.textContent = "";
-        if(mod == "multiply"){
-            equation.textContent = value + " * ";
-            mode = "multiply";
-        }
-        if(mod == "divide"){
-            equation.textContent = value + " / ";
-            mode = "divide";
-        }
-        if(mod == "subtract"){
-            equation.textContent = value + " - ";
-            mode = "subtract";
-        }
-        if(mod == "add"){
-            equation.textContent = value + " + ";
-            mode = "add";
-        }
-    });
+operators.forEach(function(element){
+    element.addEventListener('click', () => evaluate(element.id, value2, value));
+});
+
+function equate(mode, x, y){ //for '='
+    equation(mode, "equals");
+    value2 = operate(mode, x, y);
+    console.log(value2);
+    updateTotal(value2);
+    eqFlag = 1;
 }
 
-
-function addDigit(num){
-    totalfield.textContent += num;
-    value = Number(totalfield.textContent);
+function evaluate(op, x, y){ //for other operator
+    if(value2 && value && eqFlag != 1){ 
+        value2 = operate(mode, x, y);
+        equation(op);
+    }
+    operation(op);
+    eqFlag = 0;
 }
 
-function evaluate(mode, x, y){
+function updateTotal(tmp){
+    totalfield.textContent = tmp;
+}
+
+function equation(mode, eq = "other"){
+    totalfield.textContent = "";
+    if(eq == "equals"){
+        switch(mode){
+            case "add":
+                equationfield.textContent = value2 + "+" + value;
+                break;
+            case "subtract":
+                equationfield.textContent = value2 + "-" + value;
+                break;
+            case "multiply":
+                equationfield.textContent = value2 + "*" + value;
+                break;
+            case "divide":
+                equationfield.textContent = value2 + "/" + value;
+        }
+    } else if(eq == "other"){
+        switch(mode){
+            case "add":
+                equationfield.textContent = value2 + "+";
+                break;
+            case "subtract":
+                equationfield.textContent = value2 + "-";
+                break;
+            case "multiply":
+                equationfield.textContent = value2 + "*";
+                break;
+            case "divide":
+                equationfield.textContent = value2 + "/";
+        }
+    }
+}
+
+function operation(op){
+    mode = op;
+    if(!value2)
+        value2 = value;
+    value = '';
+}
+
+function addDigit(x){
+    if(value2) equation(mode);
+    value += x;
+    totalfield.textContent = value;
+}
+
+function operate(operator, x, y){
+    console.log(operator, x, y);
     let output = 0;
-    let mod = '';
-    switch(mode){
-        case "multiply":
-            output = multiply(x, y);
-            mod = "*";
-            break;
-        case "divide":
-            output = divide(x, y);
-            mod = "/";
+    switch(operator){
+        case "add":
+            output = add(x, y);
             break;
         case "subtract":
             output = subtract(x, y);
-            mod = "-";
             break;
-        case "add":
-            output = add(x, y);
-            mod = "+";
+        case "multiply":
+            output = multiply(x, y);
+            break;
+        case "divide":
+            output = divide(x, y);
+            break;
     }
-    equation.textContent = x + mod + y; 
-    totalfield.textContent = output;
-    value = Number(totalfield.textContent);
-}
-
-function clear(){
-    equation.textContent = "";
-    totalfield.textContent = "";
-    total = value = 0;
+    return output;
 }
 
 function add(x, y){
-    return x + y;
-}
-
-function multiply(x, y){
-    return x * y;
+    return Number(x) + Number(y);
 }
 
 function subtract(x, y){
     return x - y;
 }
 
+function multiply(x, y){
+    return x * y;
+}
+
 function divide(x, y){
     return x / y;
 }
 
-function newline(){
-
+function clear(){
+    value = totalfield.textContent = value2 = equationfield.textContent = '';
 }
