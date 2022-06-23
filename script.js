@@ -1,8 +1,7 @@
 //variable declaration
-let value = 0;
-let output = 0;
-let mode = '';
-let total = 0;
+let value = 0; //keep track of number on top row
+let mode = ''; //add/multiply/etc
+let total = 0; //keep track of number being entered/evaluated
 
 //get buttons and modifiers
 const numberButtons = document.querySelectorAll('.number');
@@ -12,17 +11,7 @@ const totalfield = document.querySelector('.calc-screen-ans');
 const equals = document.querySelector('.equate');
 const clearButton = document.querySelector('.clear');
 
-//for (let i = 0; i < numberButtons.length; i++){
-//    numberButtons[i].addEventListener("click", function(){
-//        totalfield.innerHTML += numberButtons[i].id;
-//        value = totalfield.innerHTML;
-//    });
-//}
-
-//functions for add, subtract, multiply, divide, negate, clear and delete
-//or add to equate as mode?
-
-equals.addEventListener("click", () => evaluate(mode, value, total));
+equals.addEventListener("click", () => evaluate(mode, total, value));
 
 clearButton.addEventListener("click", () => clear());
 
@@ -33,56 +22,80 @@ numberButtons.forEach((button) =>
 for (let i = 0; i < modButtons.length; i++){
     modButtons[i].addEventListener("click", function(){
         let mod = modButtons[i].id;
+        total = Number(value);
+        totalfield.textContent = "";
         if(mod == "multiply"){
             equation.textContent = value + " * ";
-            total = value;
-            totalfield.textContent = "";
             mode = "multiply";
         }
         if(mod == "divide"){
             equation.textContent = value + " / ";
-            total = value;
-            totalfield.textContent = "";
             mode = "divide";
         }
         if(mod == "subtract"){
             equation.textContent = value + " - ";
-            total = value;
-            totalfield.textContent = "";
             mode = "subtract";
         }
         if(mod == "add"){
             equation.textContent = value + " + ";
-            total = value;
-            totalfield.textContent = "";
             mode = "add";
         }
-        console.log(mod);
     });
 }
 
 
 function addDigit(num){
     totalfield.textContent += num;
-    value = totalfield.textContent;
+    value = Number(totalfield.textContent);
 }
 
 function evaluate(mode, x, y){
-    console.log(x, y);
+    let output = 0;
+    let mod = '';
     switch(mode){
         case "multiply":
-            return x * y;
+            output = multiply(x, y);
+            mod = "*";
+            break;
         case "divide":
-            return x / y;
+            output = divide(x, y);
+            mod = "/";
+            break;
         case "subtract":
-            return x - y;
+            output = subtract(x, y);
+            mod = "-";
+            break;
         case "add":
-            return x + y;
+            output = add(x, y);
+            mod = "+";
     }
+    equation.textContent = x + mod + y; 
+    totalfield.textContent = output;
+    value = Number(totalfield.textContent);
 }
 
 function clear(){
     equation.textContent = "";
     totalfield.textContent = "";
     total = value = 0;
+}
+
+function add(x, y){
+    return x + y;
+}
+
+function multiply(x, y){
+    return x * y;
+}
+
+function subtract(x, y){
+    return x - y;
+}
+
+function divide(x, y){
+    return x / y;
+}
+
+function newline(){
+
 }
