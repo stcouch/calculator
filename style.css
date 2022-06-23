@@ -66,8 +66,11 @@ button:active{
 .zero{
     width: 144px;
 }
-.clear{
+.clear, .allclear{
     background-color: #00ccff;
+}
+.allclear{
+    width: 144px;
 }
 .modifier{
     background-color: #9999ff;

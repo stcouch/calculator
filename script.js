@@ -12,8 +12,11 @@ const equationfield = document.querySelector('.calc-screen-q');
 const totalfield = document.querySelector('.calc-screen-ans');
 const equals = document.querySelector('.equate');
 const clearButton = document.querySelector('.clear');
+const acButton = document.querySelector('.allclear');
 
 clearButton.addEventListener('click', () => clear());
+
+acButton.addEventListener('click', () => allclear());
 
 equals.addEventListener('click', () => equate(mode, value2, value));
 
@@ -128,6 +131,10 @@ function divide(x, y){
     return x / y;
 }
 
-function clear(){
+function allclear(){
     value = totalfield.textContent = value2 = equationfield.textContent = '';
+}
+
+function clear(){
+    value = totalfield.textContent = '';
 }
